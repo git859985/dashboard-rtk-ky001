@@ -310,33 +310,26 @@ Released under the MIT license: http://jsbin.mit-license.org
             pw: document.getElementById('ntrip_pass').value          
         };
 */
-        function sendConfig() {
-            const config = {
-                host: document.getElementById('ntrip_ip').value.trim(),
-                port: document.getElementById('ntrip_port').value.trim(),
-                mount: document.getElementById('ntrip_mount').value.trim(),
-                base_mount: document.getElementById('base_mount').value.trim(),
-                user: document.getElementById('ntrip_user').value.trim(),
-                pw: document.getElementById('ntrip_pass').value.trim()      
-            };
-        
-            // 檢查是否有任何欄位是空的
-            const hasEmptyField = Object.values(config).some(value => value === "");
-        
-            if (hasEmptyField) {
-                alert("所有欄位皆都要填！");
-                return; // 阻斷後續動作，不送出資料
-            }
-        
-            // 欄位檢查沒問題後，再將 port 轉成數字轉型（避免空值轉成 NaN）
-            //config.port = parseInt(config.port);
+function sendConfig() {
+    // 1. 先抓取所有欄位的「原始文字」，並去掉前後空白
+    const host = document.getElementById('ntrip_ip').value.trim();
+    const portStr = document.getElementById('ntrip_port').value.trim();
+    const mount = document.getElementById('ntrip_mount').value.trim();
+    const base_mount = document.getElementById('base_mount').value.trim();
+    const user = document.getElementById('ntrip_user').value.trim();
+    const pw = document.getElementById('ntrip_pass').value.trim();
 
-        }    
+    // 2. 把這些字串放進陣列裡檢查，只要有一個是空的，就攔截
+    if (host === "" || portStr === "" || mount === "" || base_mount === "" || user === "" || pw === "") {
+        alert("所有欄位皆都要填！");
+        return; // 這裡成功阻斷，不會往下執行
+    }   
         const jsonString = JSON.stringify(config);
         
         client.publish(myTopic, jsonString, { qos: 1 });
 
     }
+    
     function loadConfig() {
 
         client.publish(myTopic, "AT+CONFIG?", { qos: 1 });
