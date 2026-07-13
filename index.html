@@ -294,26 +294,26 @@ Released under the MIT license: http://jsbin.mit-license.org
                 /*if (data.UTC) {
                     document.getElementById('rtk_time').textContent = data.UTC;
                 }*/
-                if (data.UTC) {
-                    const utcStr = String(data.UTC).trim();
+                if (data.Uptime !== undefined && data.Uptime !== null) {
+                    const totalSeconds = Math.floor(data.Uptime);
                     
-                    if (utcStr.length === 6) {
-                        let hh = parseInt(utcStr.substring(0, 2), 10);
-                        const mm = utcStr.substring(2, 4);
-                        const ss = utcStr.substring(4, 6);
-                        
-                        // 轉換為台灣時間 (UTC + 8)
-                        hh = (hh + 8) % 24;
-                        
-                        // 補零確保維持兩位數
-                        const twHH = String(hh).padStart(2, '0');
-                        
-                        // 顯示台灣本地時間
-                        document.getElementById('rtk_time').textContent = `${twHH}:${mm}:${ss}`;
+                    // 拆出天、時、分、秒
+                    const days = Math.floor(totalSeconds / 86400); // 1天 = 86400秒
+                    const hours = Math.floor((totalSeconds % 86400) / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+                
+                    const h = String(hours).padStart(2, '0');
+                    const m = String(minutes).padStart(2, '0');
+                    const s = String(seconds).padStart(2, '0');
+                
+                    // 如果滿 1 天以上才顯示天數，否則只顯示時間
+                    if (days > 0) {
+                        document.getElementById('rtk_uptime').textContent = `${days}D ${h}:${m}:${s}`;
                     } else {
-                        document.getElementById('rtk_time').textContent = utcStr;
+                        document.getElementById('rtk_uptime').textContent = `${h}:${m}:${s}`;
                     }
-                }                
+                }               
                 //5. ESP運行時間
                 if (data.run_time !== undefined && data.run_time !== null) {
                     const totalSeconds = Math.floor(data.run_time);
