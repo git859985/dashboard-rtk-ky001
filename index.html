@@ -300,7 +300,7 @@ Released under the MIT license: http://jsbin.mit-license.org
         client.publish(myTopic, "{\"mode\":\"base\"}", { qos: 1 });
     }  
   
-  function sendConfig() {
+/*  function sendConfig() {
         const config = {
             host: document.getElementById('ntrip_ip').value,
             port: parseInt(document.getElementById('ntrip_port').value),
@@ -309,7 +309,29 @@ Released under the MIT license: http://jsbin.mit-license.org
             user: document.getElementById('ntrip_user').value,
             pw: document.getElementById('ntrip_pass').value          
         };
+*/
+        function sendConfig() {
+            const config = {
+                host: document.getElementById('ntrip_ip').value.trim(),
+                port: document.getElementById('ntrip_port').value.trim(),
+                mount: document.getElementById('ntrip_mount').value.trim(),
+                base_mount: document.getElementById('base_mount').value.trim(),
+                user: document.getElementById('ntrip_user').value.trim(),
+                pw: document.getElementById('ntrip_pass').value.trim()      
+            };
+        
+            // 檢查是否有任何欄位是空的
+            const hasEmptyField = Object.values(config).some(value => value === "");
+        
+            if (hasEmptyField) {
+                alert("所有欄位皆都要填！");
+                return; // 阻斷後續動作，不送出資料
+            }
+        
+            // 欄位檢查沒問題後，再將 port 轉成數字轉型（避免空值轉成 NaN）
+            //config.port = parseInt(config.port);
 
+        }    
         const jsonString = JSON.stringify(config);
         
         client.publish(myTopic, jsonString, { qos: 1 });
