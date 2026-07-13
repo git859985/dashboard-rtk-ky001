@@ -327,8 +327,8 @@ function sendConfig() {
         alert("所有欄位皆都要填！");
         return; // 在這裡被擋住，下面的 publish 就讀不到，自然送不出去了
     }   
-        const jsonString = JSON.stringify(config);
-        
+        config.port = parseInt(config.port, 10);    
+        const jsonString = JSON.stringify(config);        
         client.publish(myTopic, jsonString, { qos: 1 });
 
     }
