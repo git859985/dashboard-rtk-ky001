@@ -66,6 +66,15 @@ Released under the MIT license: http://jsbin.mit-license.org
         運作時間: <span id="rtk_uptime" class="val" style="display: inline-block; text-align: right;"></span>
     </div>
 
+    <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            連線狀態: <span id="status">正在連線至 MQTTGO...</span>
+        </div>
+        <div>
+            運作時間: <span id="rtk_uptime" class="val" style="display: inline-block; text-align: right; width: 70px;"></span>
+        </div>
+    </div>    
+
     <div class="group">
         <div class="group-title">NMEA即時狀態(5秒更新)</div>
         <div class="field" style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 5px;">
@@ -288,9 +297,29 @@ Released under the MIT license: http://jsbin.mit-license.org
                 }
                 
                 // 4. 填入 UTC 時間
-                if (data.UTC) {
+                /*if (data.UTC) {
                     document.getElementById('rtk_time').textContent = data.UTC;
-                }
+                }*/
+                if (data.UTC) {
+                    const utcStr = String(data.UTC).trim();
+                    
+                    if (utcStr.length === 6) {
+                        let hh = parseInt(utcStr.substring(0, 2), 10);
+                        const mm = utcStr.substring(2, 4);
+                        const ss = utcStr.substring(4, 6);
+                        
+                        // 轉換為台灣時間 (UTC + 8)
+                        hh = (hh + 8) % 24;
+                        
+                        // 補零確保維持兩位數
+                        const twHH = String(hh).padStart(2, '0');
+                        
+                        // 顯示台灣本地時間
+                        document.getElementById('rtk_time').textContent = `${twHH}:${mm}:${ss}`;
+                    } else {
+                        document.getElementById('rtk_time').textContent = utcStr;
+                    }
+                }                
                 //5. ESP運行時間
                 if (data.run_time !== undefined && data.run_time !== null) {
                     const totalSeconds = Math.floor(data.run_time);
