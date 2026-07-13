@@ -311,18 +311,21 @@ Released under the MIT license: http://jsbin.mit-license.org
         };
 */
 function sendConfig() {
-    // 1. 先抓取所有欄位的「原始文字」，並去掉前後空白
-    const host = document.getElementById('ntrip_ip').value.trim();
-    const portStr = document.getElementById('ntrip_port').value.trim();
-    const mount = document.getElementById('ntrip_mount').value.trim();
-    const base_mount = document.getElementById('base_mount').value.trim();
-    const user = document.getElementById('ntrip_user').value.trim();
-    const pw = document.getElementById('ntrip_pass').value.trim();
+    // 你原本的宣告方式
+    const config = {
+        host: document.getElementById('ntrip_ip').value.trim(), // 建議加上 .trim()
+        port: document.getElementById('ntrip_port').value.trim(), // 先別 parseInt，當字串檢查
+        mount: document.getElementById('ntrip_mount').value.trim(),
+        base_mount: document.getElementById('base_mount').value.trim(),
+        user: document.getElementById('ntrip_user').value.trim(),
+        pw: document.getElementById('ntrip_pass').value.trim()      
+    };
 
-    // 2. 把這些字串放進陣列裡檢查，只要有一個是空的，就攔截
-    if (host === "" || portStr === "" || mount === "" || base_mount === "" || user === "" || pw === "") {
+    // 只要這段「攔截檢查」寫在 publish 之前，就能成功擋下
+    const hasEmptyField = Object.values(config).some(value => value === "");
+    if (hasEmptyField) {
         alert("所有欄位皆都要填！");
-        return; // 這裡成功阻斷，不會往下執行
+        return; // 在這裡被擋住，下面的 publish 就讀不到，自然送不出去了
     }   
         const jsonString = JSON.stringify(config);
         
