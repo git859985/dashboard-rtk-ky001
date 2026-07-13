@@ -59,7 +59,7 @@ Released under the MIT license: http://jsbin.mit-license.org
 <body>
 
 <div class="window">
-    <div class="title-bar">RTK 控制面板 (KY001)</div>
+    <div class="title-bar">RTK 控制面板 (KY002)</div>
     
     <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">
         連線狀態: <span id="status">正在連線至 MQTTGO...</span>
@@ -180,9 +180,9 @@ Released under the MIT license: http://jsbin.mit-license.org
   let geoid = 0;
     // ═══════════════ MQTTGO 伺服器與 Topic 設定 ═══════════════
     const host = 'wss://mqttgo.vip:8084/mqtt'; 
-    const myTopic = '/user/ky23205238/RTK/KY001/cmd'; // 網頁發佈(傳送)給 ESP32 的主題
-    const reportTopic1 = '/user/ky23205238/RTK/KY001/nmea'; // 網頁訂閱(接收) ESP32 狀態的主題
-    const reportTopic2 = '/user/ky23205238/RTK/KY001/log'; // 網頁訂閱(接收) ESP32 狀態的主題
+    const myTopic = '/user/ky23205238/RTK/KY002/cmd'; // 網頁發佈(傳送)給 ESP32 的主題
+    const reportTopic1 = '/user/ky23205238/RTK/KY002/nmea'; // 網頁訂閱(接收) ESP32 狀態的主題
+    const reportTopic2 = '/user/ky23205238/RTK/KY002/log'; // 網頁訂閱(接收) ESP32 狀態的主題
 
     // MQTT 連線參數設定
     const options = {
@@ -292,8 +292,8 @@ Released under the MIT license: http://jsbin.mit-license.org
                     document.getElementById('rtk_time').textContent = data.UTC;
                 }
                 //5. ESP運行時間
-                if (data.millis !== undefined && data.millis !== null) {
-                    const totalSeconds = Math.floor(data.millis / 1000);
+                if (data.run_time !== undefined && data.run_time !== null) {
+                    const totalSeconds = Math.floor(data.run_time);
                     
                     // 計算 時、分、秒
                     const hours = Math.floor(totalSeconds / 3600);
