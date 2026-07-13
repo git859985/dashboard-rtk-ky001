@@ -297,19 +297,23 @@ Released under the MIT license: http://jsbin.mit-license.org
                 if (data.UTC) {
                     const utcStr = String(data.UTC).trim();
                     
-                    // 確保剛好是 6 個字元才進行格式化（防範資料異常）
                     if (utcStr.length === 6) {
-                        const hh = utcStr.substring(0, 2);
+                        let hh = parseInt(utcStr.substring(0, 2), 10);
                         const mm = utcStr.substring(2, 4);
                         const ss = utcStr.substring(4, 6);
                         
-                        // 組合並塞入網頁畫面（例如變成 06:45:32）
-                        document.getElementById('rtk_time').textContent = `${hh}:${mm}:${sｓ}`;
+                        // 轉換為台灣時間 (UTC + 8)
+                        hh = (hh + 8) % 24;
+                        
+                        // 補零確保維持兩位數
+                        const twHH = String(hh).padStart(2, '0');
+                        
+                        // 顯示台灣本地時間
+                        document.getElementById('rtk_time').textContent = `${twHH}:${mm}:${ss}`;
                     } else {
-                        // 如果長度不對，就直接原樣顯示（或者顯示格式錯誤）
                         document.getElementById('rtk_time').textContent = utcStr;
                     }
-                }                
+                }               
                 //5. ESP運行時間
                 if (data.Uptime !== undefined && data.Uptime !== null) {
                     const totalSeconds = Math.floor(data.Uptime);
