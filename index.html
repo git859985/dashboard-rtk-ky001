@@ -63,6 +63,7 @@ Released under the MIT license: http://jsbin.mit-license.org
     
     <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">
         連線狀態: <span id="status">正在連線至 MQTTGO...</span>
+        運作時間: <span id="rtk_uptime" class="val" style="display: inline-block; text-align: right;"></span>
     </div>
 
     <div class="group">
@@ -290,9 +291,28 @@ Released under the MIT license: http://jsbin.mit-license.org
                 if (data.UTC) {
                     document.getElementById('rtk_time').textContent = data.UTC;
                 }
+                //5. ESP運行時間
+                if (data.millis !== undefined && data.millis !== null) {
+                    const totalSeconds = Math.floor(data.millis / 1000);
+                    
+                    // 計算 時、分、秒
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+                
+                    // 將數字轉為字串，並確保維持兩位數（例如 5 分變成 "05"）
+                    const h = String(hours).padStart(2, '0');
+                    const m = String(minutes).padStart(2, '0');
+                    const s = String(seconds).padStart(2, '0');
+                
+                    // 格式化為 H:M:S 並寫入畫面
+                    document.getElementById('rtk_uptime').textContent = `${h}:${m}:${s}`;
+                }                 
             } catch (e) {
                 console.warn("非JSON數據，已自動忽略。");
             }
+
+                       
         }
       
         else if (topic === reportTopic2) {
