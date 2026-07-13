@@ -140,34 +140,33 @@ Released under the MIT license: http://jsbin.mit-license.org
         <div class="group-title">NTRIP 伺服器設定</div>
         <div class="field">
             <label>IP / 網址:</label>
-            <input type="text" id="ntrip_ip" value="kynet.asuscomm.com">
+            <input type="text" id="ntrip_ip" value="">
         </div>
         <div class="field">
             <label>連接埠 (Port):</label>
-            <input type="text" id="ntrip_port" value="5000">
+            <input type="text" id="ntrip_port" value="">
         </div>
         <div class="field">
             <label>掛載點 (Mount):</label>
-            <input type="text" id="ntrip_mount" value="base01">
+            <input type="text" id="ntrip_mount" value="">
         </div>
         <div class="field">
             <label>基站名稱:</label>
-            <input type="text" id="base_mount" value="base01">
+            <input type="text" id="base_mount" value="">
         </div> 
       
         <div class="field">
             <label>User:</label>
-            <input type="text" id="ntrip_user" value="admin">
+            <input type="text" id="ntrip_user" value="">
         </div>
         <div class="field">
             <label>Password:</label>
-            <input type="text" id="ntrip_pass" value="12345678">
+            <input type="text" id="ntrip_pass" value="">
         </div>       
     <table width="100%" border="0">
         <tr>
+            <td width="50%" align="center"><button onclick="loadConfig()">讀取設定</button></td>
             <td width="50%" align="center"><button onclick="sendConfig()">修改送出</button></td>
-            <td width="50%" align="center"><button onclick="loadConfig()">重新讀取</button></td>
-
         </tr>
     </table>
       
